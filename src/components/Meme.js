@@ -1,7 +1,12 @@
 import React from "react"
-import memesData from "../memesData.js"
 
 const Meme = ()=> { 
+
+    React.useEffect(()=>{
+        fetch("https://api.imgflip.com/get_memes")
+        .then(res => res.json())
+        .then(data => setAllMemes(data.data.memes))
+    }, [])
     
     const [meme, setMeme] = React.useState({
         topText: "",
@@ -17,12 +22,11 @@ const Meme = ()=> {
             }
         })
     }
-    const [allMemeImages, setAllMemeImages] = React.useState(memesData)
+    const [allMemes, setAllMemes] = React.useState([])
 
     function getMemeImage() {
-        const memesArray = allMemeImages.data.memes
-        const randomNumber = Math.floor(Math.random() * memesArray.length)
-       let url = memesArray[randomNumber].url
+        const randomNumber = Math.floor(Math.random() * allMemes.length)
+       let url = allMemes[randomNumber].url
         setMeme(prevState =>({
             ...prevState,
             randomImage: url 
@@ -60,7 +64,10 @@ const Meme = ()=> {
                 <h2 className="meme--text top">{meme.topText} </h2>
                 <h2 className="meme--text bottom">{meme.bottomText} </h2>
             </div>
-
+             {/*<pre>{JSON.stringify(allMemes, null, 2)}</pre>
+                checked out the data being sent from the Api so as to modify my state,
+                 to access the meme image url
+             */}
         </main>
     )
 }

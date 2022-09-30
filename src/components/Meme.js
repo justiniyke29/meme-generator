@@ -1,74 +1,83 @@
-import React from "react"
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const Meme = ()=> { 
+ export const Meme = () => {
 
-    React.useEffect(()=>{
-        fetch("https://api.imgflip.com/get_memes")
-        .then(res => res.json())
-        .then(data => setAllMemes(data.data.memes))
-    }, [])
-    
-    const [meme, setMeme] = React.useState({
-        topText: "",
-        bottomText: "",
-        randomImage: "http://i.imgflip.com/1bij.jpg"
-    })
-    const handleChange =(event)=>{
-        const {name, value} = event.target
-        setMeme(prev =>{
-            return {
-                ...prev,
-                [name]: value
-            }
-        })
+  const [memes, setMemes] = useState([]);
+  const [memeIndex, setMemeIndex] = useState(0);
+  const [captions, setCaptions] = useState([]);
+
+  const navigate = useNavigate();
+
+  const updateCaption = (e, index) => {
+    const text = e.target.value || '';
+    setCaptions(
+      captions.map((c, i) => {
+        if(index === i) {
+          return text;
+        } else {
+          return c;
+        }
+      })
+    );
+  };
+
+  const generateMeme = () => {
+    const currentMeme = memes[memeIndex];
+    const formData = new FormData();
+
+    formData.append('username', 'justiniyke');
+    formData.append('password', 'justin1234567890');
+    formData.append('template_id', currentMeme.id);
+    captions.forEach((c, index) => formData.append(`boxes[${index}][text]`, c));
+
+    fetch('https://api.imgflip.com/caption_image', {
+      method: 'POST',
+      body: formData
+    }).then(res => {
+      res.json().then(res => {
+        navigate(`/generated?url = ${res.data.url}`);
+      });
+    });
+  };
+
+  const shuffleMemes = (array) => {
+    for (let i = array.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * i);
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
     }
-    const [allMemes, setAllMemes] = React.useState([])
+  };
 
-    function getMemeImage() {
-        const randomNumber = Math.floor(Math.random() * allMemes.length)
-       let url = allMemes[randomNumber].url
-        setMeme(prevState =>({
-            ...prevState,
-            randomImage: url 
-        }))
+  useEffect(() => {
+    fetch('https://api.imgflip.com/get_memes').then(res => {
+      res.json().then(res => {
+        const _memes = res.data.memes;
+        shuffleMemes(_memes);
+        setMemes(_memes);
+      });
+    });
+  }, []);
+
+  useEffect(() => {
+    if(memes.length) {
+      setCaptions(Array(memes[memeIndex].box_count).fill(''));
     }
-    
-    return (
-        <main>
-            <div className="form">
-                <input 
-                    type="text"
-                    placeholder="Top text"
-                    className="form--input"
-                    name="topText"
-                    value={meme.topText}
-                    onChange={handleChange}
-                />
-                <input 
-                    type="text"
-                    placeholder="Bottom text"
-                    className="form--input"
-                    name="bottomText"
-                    value={meme.bottomText}
-                    onChange={handleChange}
-                />
-                <button 
-                    className="form--button"
-                    onClick={getMemeImage}
-                >
-                    Get a new meme image 🖼
-                </button>
-            </div>
-            <div className="meme">
-                <img src={meme.randomImage} alt="memeimage" className="meme-image"/>
-                <h2 className="meme--text top">{meme.topText} </h2>
-                <h2 className="meme--text bottom">{meme.bottomText} </h2>
-            </div>
-             {/*<pre>{JSON.stringify(allMemes, null, 2)}</pre>
-                checked out the data being sent from the Api so as to modify my state,
-                 to access the meme image url
-             */}
-        </main>
-    )
-}
-export default Meme
+  }, [memeIndex, memes]);
+
+  return(
+    memes.length ? 
+    <div className="container">
+      <button onClick={generateMeme} className="generate">Generate meme image 🖼</button>
+      <button onClick={() => setMemeIndex(memeIndex + 1)} className="skip">Skip image</button>
+      {
+        captions.map((c, index) => (
+          <input onChange={(e) => updateCaption(e, index)} key={index} />
+        ))
+      }
+      <img alt='meme' src={memes[memeIndex].url} />
+    </div> : 
+    <></>
+  );
+};

@@ -1,17 +1,22 @@
 * {
     box-sizing: border-box;
 }
+
 body {
-    font-family: "Karla", sans-serif;
     margin: 0;
-    max-width: 700px;
-}
-
-main {
-    padding: 36px;
-}
-
-.header {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans',
+      'Droid Sans', 'Helvetica Neue', sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    background: url('./bg.jpg');
+    background-repeat: no-repeat;
+    background-size: 100vw auto;
+    background-size: 100%;
+    background-size: cover;
+    color: white;
+    max-width: 100%;
+  }
+  .header {
     display: flex;
     align-items: center;
     height: 65px;
@@ -23,6 +28,8 @@ main {
 .header--image {
     height: 100%;
     margin-right: 6px;
+    margin-top: 0%;
+    margin-left: 0%;
 }
 
 .header--title {
@@ -34,70 +41,60 @@ main {
     font-size: 0.75rem;
     font-weight: 500;
 }
-
-.form {
-    display: grid;
-    grid-template: 40px 40px / 1fr 1fr;
-    gap: 17px;
-    margin-bottom: 17px;
-}
-
-.form--input {
-    font-family: "Karla", sans-serif;
-    border-radius: 5px;
-    border: 1px solid #D5D4D8;
-    text-indent: 5px;
-}
-
-.form--button {
-    grid-column: 1 / -1;
-    font-family: "Karla", sans-serif;
-    border-radius: 5px;
-    background: linear-gradient(90.41deg, #711F8D 1.14%, #A818DA 100%);
+  .container {
+    margin-top: 50px;
+  }
+  .copy {
+    background-color: #0275d8;
+    margin-top: 20px;
+  }
+  .home {
+    background-color: #f0ad4e;
+  }
+  
+  code {
+    font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
+  }
+  
+  button {
+    cursor: pointer;
+    display: block;
+    width: 350px;
+    padding: 10px;
+    margin: auto;
+    margin-bottom: 15px;
     color: white;
     border: none;
-    cursor: pointer;
-}
-
-.meme {
-    position: relative;
-
-}
-
-.meme-image {
-    max-width: 100% ;
-    border-radius: 3px;
-}
-
-.meme--text {
-    position: absolute;
-    width: 80%;
+    border-radius: 10px;
+  }
+  img {
+    max-width: 500px;
+    max-height: 500px;
+    margin: auto;
+    margin-top: 50px;
+    display: block;
+    box-shadow: 0px 0px 10px black;
+  }
+  input {
+    box-sizing: border-box;
+    display: block;
+    padding: 10px;
+    width: 350px;
+    margin: auto;
+    margin-bottom: 15px;
+    border-radius: 10px;
+  }
+  h1 {
     text-align: center;
-    left: 50%;
-    transform: translateX(-50%);
-    margin: 15px 0;
-    padding: 0 5px;
-    font-family: impact, sans-serif;
-    font-size: 2em;
-    text-transform: uppercase;
-    color: white;
-    letter-spacing: 1px;
-    text-shadow:
-        2px 2px 0 #000,
-        -2px -2px 0 #000,
-        2px -2px 0 #000,
-        -2px 2px 0 #000,
-        0 2px 0 #000,
-        2px 0 0 #000,
-        0 -2px 0 #000,
-        -2px 0 0 #000,
-        2px 2px 5px #000;
-}
-
-.bottom {
-    bottom: 0;
-}
-
-.top {
-    top: 0;
-}
+    font-size: 50px;
+    text-shadow: 0px 0px 5px black;
+  }
+  .container {
+    margin-top: 50px;
+  }
+  .skip {
+    background-color: #f0ad4e;
+  }
+  .generate {
+    background-color: #0275d8;
+  }
